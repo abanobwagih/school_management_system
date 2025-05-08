@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\{
     BookController, BorrowController, EventController,DED, NoticeController
 };
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'log.ip'])->group(function () {
     // Admin-only routes
     Route::middleware('role:admin')->group(function () {
         Route::apiResource('users', UserController::class);
