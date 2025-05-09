@@ -2,22 +2,22 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Staff;
 use App\Models\User;
 use App\Models\Department;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Staff>
- */
 class StaffFactory extends Factory
 {
+    protected $model = Staff::class;
+
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), // creates and links new user
-            'department_id' => Department::factory(), // creates and links new department
+            'user_id' => User::factory(),
+           'department_id' => 1, // or null, or use override from seeder
             'position' => $this->faker->jobTitle(),
-            'hire_date' => $this->faker->dateTimeBetween('-5 years', 'now')->format('Y-m-d'),
+            'hire_date' => $this->faker->dateTimeBetween('-5 years', 'now'),
         ];
     }
 }

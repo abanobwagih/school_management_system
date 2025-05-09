@@ -18,11 +18,11 @@ class LogIpAddressMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check()) {
+        if (Auth::guard('sanctum')->check()) {
             $token = $request->bearerToken();
             if ($token) {
                 UserSession::where('token', $token)
-                    ->where('user_id', Auth::id())
+                    ->where('user_id', Auth::guard('sanctum')->id())
                     ->update(['ip_address' => $request->ip()]);
             }
         }

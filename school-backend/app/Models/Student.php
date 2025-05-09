@@ -1,12 +1,39 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Student extends Model
 {
-    protected $fillable = ['user_id', 'classroom_id', 'section_id', 'registration_no', 'birthdate', 'gender'];
+    use LogsActivity;
 
+    protected $fillable = [
+        'user_id',
+        'classroom_id',
+        'section_id',
+        'registration_no',
+        'birthdate',
+        'gender'
+    ];
+
+    // Configure what to log
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['user_id', 'classroom_id', 'section_id', 'registration_no', 'birthdate', 'gender'])
+            ->logOnlyDirty() // Only log changed attributes
+            ->useLogName('student');
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "Student has been {$eventName}";
+    }
+
+    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
